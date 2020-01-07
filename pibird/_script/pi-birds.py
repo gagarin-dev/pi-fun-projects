@@ -1,0 +1,55 @@
+# Bird feeder with motion detection, takes photos of birds.
+# Based on https://github.com/RuiSantosdotme/RaspberryPiProject/blob/master/Code/Project_13/burglar_detector.py
+
+# Note: to test your camera, run from the terminal:
+# raspistill -o image.jpg
+
+from gpiozero import Button, MotionSensor
+from picamera import PiCamera
+from datetime import datetime
+from time import sleep
+from signal import pause
+import logging
+
+# Set up 'logger'. DEBUG for debugging, INFO for informational messages.
+logging.basicConfig(filename="pibird-log.log",level=logging.DEBUG)
+
+# Init Camera
+camera = PiCamera() # https://picamera.readthedocs.io/en/release-1.13/recipes1.html#recipes1
+camera.led = False # Turn the camera's LED off
+camera.start_preview() # activate the camera
+
+# Init PIR sensor
+pir = MotionSensor(4) # at GPIO 4
+
+# Init push-button
+button = Button(2) # at GPIO 2
+
+sleep(2) # warm-up camera and sensor
+
+
+def stop_camera():
+    '''stop the camera when the pushbutton is pressed'''
+    camera.stop_preview()
+    logging.info("Closing the session...")
+    camera.close()
+    #exit the program
+    exit()
+
+
+def take_photo():
+    '''take photo when motion is detected'''
+    timenow = datetime.now()
+    filename = "photo-" + timenow.strftime("%Y-%m-%d-%H%M%S") + ".jpg"
+    camera.capture(filename) # capture photo to a file
+    logging.info("New photo in {0}".format(filename))
+    sleep(10) # time-out 
+
+## MAIN HANDLER
+#assign a function that runs when the button is pressed
+button.when_pressed = stop_camera
+#assign a function that runs when motion is detected
+pir.when_motion = take_photo
+
+# wait for a signal from the button or sensor
+pause()
