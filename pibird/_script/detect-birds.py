@@ -17,6 +17,7 @@ logging.basicConfig(filename="pibird-log.log",level=logging.DEBUG)
 # Init Camera
 camera = PiCamera() # https://picamera.readthedocs.io/en/release-1.13/recipes1.html#recipes1
 camera.led = False # Turn the camera's LED off
+#camera.rotation = 180
 camera.start_preview() # activate the camera
 
 # Init PIR sensor
@@ -43,7 +44,7 @@ def take_photo():
     filename = "photo-" + timenow.strftime("%Y-%m-%d-%H%M%S") + ".jpg"
     camera.capture(filename) # capture photo to a file
     logging.info("New photo in {0}".format(filename))
-    sleep(10) # time-out 
+    sleep(5) # time-out 
 
 ## MAIN HANDLER
 #assign a function that runs when the button is pressed
