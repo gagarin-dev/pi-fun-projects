@@ -1,0 +1,2 @@
+IR Motion Sensor:
+https://www.mysensors.org/build/motion
