@@ -44,7 +44,7 @@ def take_photo():
     filename = "photo-" + timenow.strftime("%Y-%m-%d-%H%M%S") + ".jpg"
     camera.capture(filename) # capture photo to a file
     logging.info("New photo in {0}".format(filename))
-    sleep(5) # time-out 
+    sleep(3) # time-out 
 
 ## MAIN HANDLER
 #assign a function that runs when the button is pressed
